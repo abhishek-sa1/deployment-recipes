@@ -40,13 +40,6 @@
     sudo openchami-certificate-update update {{ cluster_name }}.{{ cluster_domain }}
   changed_when: true
 
-- name: Start the openchami service
-  ansible.builtin.systemd:
-    name: openchami.target
-    state: restarted
-    enabled: true
-    daemon_reload: true
-
 - name: Get ochami client respone
   ansible.builtin.uri:
     url: "{{ ochami_client_api_url }}"
@@ -73,6 +66,13 @@
   ansible.builtin.template:
     src: ochami/config.yaml.j2
     dest: '{{ ochami_dir }}/config.yaml'
+
+- name: Start the openchami service
+  ansible.builtin.systemd:
+    name: openchami.target
+    state: restarted
+    enabled: true
+    daemon_reload: true
 
 # - name: Drop ochami nodes.yaml
 #   ansible.builtin.template:
