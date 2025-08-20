@@ -12,6 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
+- name: Pause for 30 seconds
+  ansible.builtin.pause:
+    seconds: 30
+
 - name: Verify ochami dependecies
   ansible.builtin.shell:
     systemctl list-dependencies openchami.target

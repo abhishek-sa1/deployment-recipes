@@ -8,8 +8,8 @@
 
     - name: Run cleanup
       ansible.builtin.shell:
-        command: chmod +x /root/cleanup.sh && bash /root/cleanup.sh
-      changed_when: false
+        chmod +x /root/cleanup.sh && bash /root/cleanup.sh
+      changed_when: true
       register: cleanup
     
     - name: Cleanup output

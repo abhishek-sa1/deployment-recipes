@@ -43,7 +43,7 @@
 - name: Start the openchami service
   ansible.builtin.systemd:
     name: openchami.target
-    state: started
+    state: restarted
     enabled: true
     daemon_reload: true
 
