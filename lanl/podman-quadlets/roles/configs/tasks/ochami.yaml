@@ -11,29 +11,51 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+---
 
-- name: Get ochami latest release URL
-  ansible.builtin.shell: |
-    curl -s {{ ochami_latest_release_url }} | jq -r '.assets[] | select(.name | endswith("amd64.rpm")) | .browser_download_url'
-  register: ochami_latest_release_url
+- name: Get latest release info from GitHub
+  ansible.builtinuri:
+    url: "{{ ochami_api_url }}"
+    return_content: true
+  register: release_response
 
-- name: Drop ochami nodes.yaml
-  ansible.builtin.template:
-    src: ochami/nodes.yaml.j2
-    dest: '{{ ochami_dir }}/nodes.yaml'
+- name: Extract RPM download URL
+  ansible.builtin.set_fact:
+    rpm_url: "{{ release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].browser_download_url') | first }}"
+    rpm_name: "{{ release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].name') | first }}"
 
-- name: Drop ochami groups.yaml
-  template:
-    src: ochami/groups.yaml.j2
-    dest: '{{ ochami_dir }}/groups.yaml'
+- name: Download the RPM file
+  ansible.builtinget_url:
+    url: "{{ rpm_url }}"
+    dest: "{{ ochami_work_dir }}/{{ rpm_name }}"
 
-- name: get ochami CLI
+- name: Install the RPM package
   ansible.builtin.dnf:
-    name: '{{ ochami_latest_release_url.stdout }}'
+    name: "{{ ochami_work_dir }}/{{ rpm_name }}"
     state: present
-    disable_gpg_check: true
 
-- name: configure ochami CLI
-  ansible.builtin.template:
-    src: ochami/config.yaml.j2
-    dest: '{{ ochami_dir }}/config.yaml'
+# - name: Get ochami latest release URL
+#   ansible.builtin.shell: |
+#     curl -s {{ ochami_latest_release_url }} | jq -r '.assets[] | select(.name | endswith("amd64.rpm")) | .browser_download_url'
+#   register: ochami_latest_release_url
+
+# - name: Drop ochami nodes.yaml
+#   ansible.builtin.template:
+#     src: ochami/nodes.yaml.j2
+#     dest: '{{ ochami_dir }}/nodes.yaml'
+
+# - name: Drop ochami groups.yaml
+#   template:
+#     src: ochami/groups.yaml.j2
+#     dest: '{{ ochami_dir }}/groups.yaml'
+
+# - name: get ochami CLI
+#   ansible.builtin.dnf:
+#     name: '{{ ochami_latest_release_url.stdout }}'
+#     state: present
+#     disable_gpg_check: true
+
+# - name: configure ochami CLI
+#   ansible.builtin.template:
+#     src: ochami/config.yaml.j2
+#     dest: '{{ ochami_dir }}/config.yaml'

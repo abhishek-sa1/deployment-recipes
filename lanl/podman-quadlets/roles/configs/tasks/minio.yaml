@@ -12,12 +12,17 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-- name: Create ochami directory
-  ansible.builtin.file:
-    path: '{{ item }}'
-    state: directory
-    mode: '{{ file_perm_rwx }}'
-  with_items:
-    - '{{ data_oci_dir }}'
-    - '{{ data_s3_dir }}'
-    - '{{ ochami_work_dir }}'
+- name: Drop minio Quadlet files
+  ansible.builtin.template:
+    src: minio/minio.service.j2
+    dest: '/etc/containers/systemd/minio.container'
+    owner: root
+    group: root
+    mode: '{{ file_perm_rw }}'
+  notify: Reload systemd
+
+- name: Start minio service
+  ansible.builtin.service:
+    name: minio.service
+    state: started
+    enabled: true

@@ -18,32 +18,39 @@
 - name: Import configs task
   ansible.builtin.import_tasks: configs.yaml
 
-- name: Import configurator task
-  ansible.builtin.import_tasks: configurator.yaml
+- name: Import hosts task
+  ansible.builtin.import_tasks: hosts.yaml
+
+- name: Import minio task
+  ansible.builtin.import_tasks: minio.yaml
+
+- name: Import registry task
+  ansible.builtin.import_tasks: registry.yaml
+
+
+# - name: Import configurator task
+#   ansible.builtin.import_tasks: configurator.yaml
 
 - name: Import coredhcp task
   ansible.builtin.import_tasks: coredhcp.yaml
 
-- name: Import haproxy task
-  ansible.builtin.import_tasks: haproxy.yaml
+# - name: Import haproxy task
+#   ansible.builtin.import_tasks: haproxy.yaml
 
-- name: Import hydra task
-  ansible.builtin.import_tasks: hydra.yaml
+# - name: Import hydra task
+#   ansible.builtin.import_tasks: hydra.yaml
 
-- name: Import opaal task
-  ansible.builtin.import_tasks: opaal.yaml
+# - name: Import opaal task
+#   ansible.builtin.import_tasks: opaal.yaml
 
-- name: Import pg-init task
-  ansible.builtin.import_tasks: pg-init.yaml
+# - name: Import pg-init task
+#   ansible.builtin.import_tasks: pg-init.yaml
 
-- name: Import podman task
-  ansible.builtin.import_tasks: podman.yaml
+# - name: Import podman task
+#   ansible.builtin.import_tasks: podman.yaml
 
-- name: Import profile task
-  ansible.builtin.import_tasks: profile.yaml
+# - name: Import profile task
+#   ansible.builtin.import_tasks: profile.yaml
 
 - name: Import ochami task
   ansible.builtin.import_tasks: ochami.yaml
-
-- name: Import hosts task
-  ansible.builtin.import_tasks: hosts.yaml
