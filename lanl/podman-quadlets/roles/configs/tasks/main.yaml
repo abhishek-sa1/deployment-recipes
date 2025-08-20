@@ -54,3 +54,6 @@
 
 - name: Import ochami task
   ansible.builtin.import_tasks: ochami.yaml
+
+- name: Import verify task
+  ansible.builtin.import_tasks: verify.yaml

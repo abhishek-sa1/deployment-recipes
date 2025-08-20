@@ -1,2 +1,2 @@
 [ochami]
-demo-head.si.usrc
+localhost ansible_port=22 ansible_ssh_common_args="-o StrictHostKeyChecking=no"
