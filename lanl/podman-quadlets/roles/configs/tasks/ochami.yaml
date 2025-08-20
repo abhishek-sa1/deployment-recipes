@@ -14,7 +14,7 @@
 ---
 
 - name: Get latest release info from GitHub
-  ansible.builtinuri:
+  ansible.builtin.uri:
     url: "{{ ochami_api_url }}"
     return_content: true
   register: release_response
@@ -25,7 +25,7 @@
     rpm_name: "{{ release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].name') | first }}"
 
 - name: Download the RPM file
-  ansible.builtinget_url:
+  ansible.builtin.get_url:
     url: "{{ rpm_url }}"
     dest: "{{ ochami_work_dir }}/{{ rpm_name }}"
 

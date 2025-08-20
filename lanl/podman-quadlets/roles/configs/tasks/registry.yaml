@@ -26,3 +26,4 @@
     name: registry.service
     state: started
     enabled: true
+    daemon_reload: true
