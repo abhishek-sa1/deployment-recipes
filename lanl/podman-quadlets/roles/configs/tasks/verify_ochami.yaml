@@ -17,15 +17,15 @@
   ansible.builtin.pause:
     seconds: 30
 
-- name: Verify ochami dependecies
+- name: Verify ochami dependencies
   ansible.builtin.shell:
     systemctl list-dependencies openchami.target
-  register: openchami_dependecies
+  register: openchami_dependencies
   changed_when: false
 
-- name: Openchami dependecy output
+- name: Openchami dependencies output
   ansible.builtin.debug:
-    msg: "{{ openchami_dependecies.stdout_lines }}"
+    msg: "{{ openchami_dependencies.stdout_lines }}"
 
 - name: Verify ochami bss status
   ansible.builtin.shell:
