@@ -37,7 +37,7 @@
 
 - name: Update openchami certificates
   ansible.builtin.shell: |
-    sudo openchami-certificate-update update {{ cluster }}.{{ cluster_domain }}
+    sudo openchami-certificate-update update {{ cluster_name }}.{{ cluster_domain }}
   changed_when: true
 
 - name: Start the openchami service
