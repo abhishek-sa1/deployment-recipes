@@ -67,7 +67,7 @@
     src: ochami/config.yaml.j2
     dest: '{{ ochami_dir }}/config.yaml'
 
-- name: Start the openchami service
+- name: Start the openchami service (This task will take some time)
   ansible.builtin.systemd:
     name: openchami.target
     state: restarted
