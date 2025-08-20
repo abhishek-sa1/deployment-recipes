@@ -17,12 +17,10 @@ ochami_cli_log_level: warning
 ochami_cli_log_format: basic
 ochami_dir: /etc/ochami
 ochami_config_dir: '{{ ochami_dir }}/configs'
-ochami_latest_release_url: https://api.github.com/repos/OpenCHAMI/ochami/releases/latest
 file_perm_rw: 0644
 file_perm_rwx: 0755
 ochami_work_dir: /opt/workdir
 data_oci_dir: /data/oci
 data_s3_dir: /data/s3
-ochami_repo_owner: "openchami"
-ochami_repo_name: "release"
-ochami_api_url: "https://api.github.com/repos/{{ ochami_repo_owner }}/{{ ochami_repo_name }}/releases/latest"
+openchami_api_url: "https://api.github.com/repos/openchami/release/releases/latest"
+ochami_client_api_url: "https://api.github.com/repos/OpenCHAMI/ochami/releases/latest"

@@ -13,31 +13,66 @@
 #  limitations under the License.
 ---
 
-- name: Get latest release info from GitHub
+- name: Get latest openchami response
   ansible.builtin.uri:
-    url: "{{ ochami_api_url }}"
+    url: "{{ openchami_api_url }}"
     return_content: true
-  register: release_response
+  register: openchami_release_response
 
-- name: Extract RPM download URL
+- name: Extract openchami RPM download URL
   ansible.builtin.set_fact:
-    rpm_url: "{{ release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].browser_download_url') | first }}"
-    rpm_name: "{{ release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].name') | first }}"
+    openchami_rpm_url: "{{ openchami_release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].browser_download_url') | first }}"
+    openchami_rpm_name: "{{ openchami_release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].name') | first }}"
 
-- name: Download the RPM file
+- name: Download the openchami RPM file
   ansible.builtin.get_url:
-    url: "{{ rpm_url }}"
-    dest: "{{ ochami_work_dir }}/{{ rpm_name }}"
+    url: "{{ openchami_rpm_url }}"
+    dest: "{{ ochami_work_dir }}/{{ openchami_rpm_name }}"
 
-- name: Install the RPM package
+- name: Install the openchami
   ansible.builtin.dnf:
-    name: "{{ ochami_work_dir }}/{{ rpm_name }}"
+    name: "{{ ochami_work_dir }}/{{ openchami_rpm_name }}"
     state: present
+    disable_gpg_check: true
 
-# - name: Get ochami latest release URL
-#   ansible.builtin.shell: |
-#     curl -s {{ ochami_latest_release_url }} | jq -r '.assets[] | select(.name | endswith("amd64.rpm")) | .browser_download_url'
-#   register: ochami_latest_release_url
+- name: Update openchami certificates
+  ansible.builtin.shell: |
+    sudo openchami-certificate-update update {{ cluster }}.{{ cluster_domain }}
+  changed_when: true
+
+- name: Start the openchami service
+  ansible.builtin.systemd:
+    name: openchami.target
+    state: started
+    enabled: true
+    daemon_reload: true
+
+- name: Get ochami client respone
+  ansible.builtin.uri:
+    url: "{{ ochami_client_api_url }}"
+    return_content: true
+  register: ochami_client_release_response
+
+- name: Extract ochami RPM download URL
+  ansible.builtin.set_fact:
+    ochami_client_rpm_url: "{{ ochami_client_release_response.content | from_json | json_query('assets[?ends_with(name, `amd64.rpm`)].browser_download_url') | first }}"
+    ochami_client_rpm_name: "{{ ochami_client_release_response.content | from_json | json_query('assets[?ends_with(name, `amd64.rpm`)].name') | first }}"
+
+- name: Download the ochami client RPM file
+  ansible.builtin.get_url:
+    url: "{{ ochami_client_rpm_url }}"
+    dest: "{{ ochami_work_dir }}/{{ ochami_client_rpm_name }}"
+
+- name: Install ochami CLI
+  ansible.builtin.dnf:
+    name: "{{ ochami_work_dir }}/{{ ochami_client_rpm_name }}"
+    state: present
+    disable_gpg_check: true
+
+- name: Configure ochami CLI
+  ansible.builtin.template:
+    src: ochami/config.yaml.j2
+    dest: '{{ ochami_dir }}/config.yaml'
 
 # - name: Drop ochami nodes.yaml
 #   ansible.builtin.template:
@@ -48,14 +83,3 @@
 #   template:
 #     src: ochami/groups.yaml.j2
 #     dest: '{{ ochami_dir }}/groups.yaml'
-
-# - name: get ochami CLI
-#   ansible.builtin.dnf:
-#     name: '{{ ochami_latest_release_url.stdout }}'
-#     state: present
-#     disable_gpg_check: true
-
-# - name: configure ochami CLI
-#   ansible.builtin.template:
-#     src: ochami/config.yaml.j2
-#     dest: '{{ ochami_dir }}/config.yaml'
