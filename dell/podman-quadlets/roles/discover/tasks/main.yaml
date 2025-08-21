@@ -8,6 +8,7 @@
     ochami_env: "{{ { cluster_env_key: access_token_result.stdout } }}"
 
 - name: Discover nodes
+  environment: "{{ ochami_env }}"
   block:
     - name: Create ochami nodes directory
       ansible.builtin.file:
