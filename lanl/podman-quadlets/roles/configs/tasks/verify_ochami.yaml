@@ -13,9 +13,9 @@
 #  limitations under the License.
 ---
 
-- name: Pause for 30 seconds
+- name: Pause for 60 seconds
   ansible.builtin.pause:
-    seconds: 30
+    seconds: 60
 
 - name: Verify ochami dependencies
   ansible.builtin.shell:
