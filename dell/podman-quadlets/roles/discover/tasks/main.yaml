@@ -1,17 +1,4 @@
-- name: Set ochami_env
-  when: ochami_env is not defined
-  block:
-    - name: Generate access token
-      ansible.builtin.shell: sudo bash -lc 'gen_access_token'
-      register: access_token_result
-      changed_when: false
-
-    - name: Set ochami_env
-      ansible.builtin.set_fact:
-        ochami_env: "{{ { cluster_env_key: access_token_result.stdout } }}"
-
 - name: Discover nodes
-  environment: "{{ ochami_env }}"
   block:
     - name: Create ochami nodes directory
       ansible.builtin.file:
