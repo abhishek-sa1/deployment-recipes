@@ -12,29 +12,45 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-- name: Create ochami nodes directory
-  ansible.builtin.file:
-    path: '{{ ochami_work_dir }}/nodes'
-    state: directory
-    mode: '{{ file_perm_rwx }}'
+- name: Set access token
+  when: access_token_env is not defined
+  block:
+    - name: Generate access token
+      ansible.builtin.shell: sudo bash -lc 'gen_access_token'
+      register: access_token_result
+      changed_when: false
 
-- name: Drop ochami nodes.yaml
-  ansible.builtin.template:
-    src: nodes.yaml.j2
-    dest: '{{ ochami_work_dir }}/nodes/nodes.yaml'
-    mode: '{{ file_perm_rw }}'
+    - name: Set access token as environment variable
+      ansible.builtin.set_fact:
+        access_token_env: "{{ access_token_result.stdout }}"
 
-- name: Discovery ochami nodes
-  ansible.builtin.shell: |
-    ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml
-  changed_when: true
+- name: Discover nodes
+  environment:
+    "{{ cluster_name | capitalize }}_ACCESS_TOKEN": "{{ access_token_env }}"
+  block:
+    - name: Create ochami nodes directory
+      ansible.builtin.file:
+        path: '{{ ochami_work_dir }}/nodes'
+        state: directory
+        mode: '{{ file_perm_rwx }}'
 
-- name: Verify node created in smd
-  ansible.builtin.shell: |
-    ochami smd component get | jq '.Components[] | select(.Type == "Node")'
-  changed_when: true
-  register: openchami_smd_status
+    - name: Drop ochami nodes.yaml
+      ansible.builtin.template:
+        src: nodes.yaml.j2
+        dest: '{{ ochami_work_dir }}/nodes/nodes.yaml'
+        mode: '{{ file_perm_rw }}'
 
-- name: Openchami smd status output
-  ansible.builtin.debug:
-    msg: "{{ openchami_smd_status.stdout_lines }}"
+    - name: Discovery ochami nodes
+      ansible.builtin.shell: |
+        ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml
+      changed_when: true
+
+    - name: Verify node created in smd
+      ansible.builtin.shell: |
+        ochami smd component get | jq '.Components[] | select(.Type == "Node")'
+      changed_when: true
+      register: openchami_smd_status
+
+    - name: Openchami smd status output
+      ansible.builtin.debug:
+        msg: "{{ openchami_smd_status.stdout_lines }}"

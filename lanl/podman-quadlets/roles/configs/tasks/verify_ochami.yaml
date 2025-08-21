@@ -13,36 +13,40 @@
 #  limitations under the License.
 ---
 
-- name: Pause for 60 seconds
-  ansible.builtin.pause:
-    seconds: 60
+- name: Verify ochami installation
+  environment:
+    "{{ cluster_name | capitalize }}_ACCESS_TOKEN": "{{ access_token_env }}"
+  block:
+    - name: Pause for 60 seconds
+      ansible.builtin.pause:
+        seconds: 60
 
-- name: Verify ochami dependencies
-  ansible.builtin.shell:
-    systemctl list-dependencies openchami.target
-  register: openchami_dependencies
-  changed_when: false
+    - name: Verify ochami dependencies
+      ansible.builtin.shell:
+        systemctl list-dependencies openchami.target
+      register: openchami_dependencies
+      changed_when: false
 
-- name: Openchami dependencies output
-  ansible.builtin.debug:
-    msg: "{{ openchami_dependencies.stdout_lines }}"
+    - name: Openchami dependencies output
+      ansible.builtin.debug:
+        msg: "{{ openchami_dependencies.stdout_lines }}"
 
-- name: Verify ochami bss status
-  ansible.builtin.shell:
-    ochami bss status
-  register: openchami_bss_status
-  changed_when: false
+    - name: Verify ochami bss status
+      ansible.builtin.shell:
+        ochami bss status
+      register: openchami_bss_status
+      changed_when: false
 
-- name: Openchami bss status output
-  ansible.builtin.debug:
-    msg: "{{ openchami_bss_status.stdout_lines }}"
+    - name: Openchami bss status output
+      ansible.builtin.debug:
+        msg: "{{ openchami_bss_status.stdout_lines }}"
 
-- name: Verify ochami smd status
-  ansible.builtin.shell:
-    ochami smd status
-  register: openchami_smd_status
-  changed_when: false
+    - name: Verify ochami smd status
+      ansible.builtin.shell:
+        ochami smd status
+      register: openchami_smd_status
+      changed_when: false
 
-- name: Openchami smd status output
-  ansible.builtin.debug:
-    msg: "{{ openchami_smd_status.stdout_lines }}"
+    - name: Openchami smd status output
+      ansible.builtin.debug:
+        msg: "{{ openchami_smd_status.stdout_lines }}"

@@ -74,6 +74,15 @@
     enabled: true
     daemon_reload: true
 
+- name: Generate access token
+  ansible.builtin.shell: sudo bash -lc 'gen_access_token'
+  register: access_token_result
+  changed_when: false
+
+- name: Set access token as environment variable
+  ansible.builtin.set_fact:
+    access_token_env: "{{ access_token_result.stdout }}"
+
 # - name: Drop ochami groups.yaml
 #   template:
 #     src: ochami/groups.yaml.j2
