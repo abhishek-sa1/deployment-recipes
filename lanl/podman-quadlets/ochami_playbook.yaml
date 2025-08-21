@@ -2,6 +2,8 @@
   hosts: ochami
   roles:
     - { role: configs, tags: ['configs'] }
+    - { role: discover, tags: ['discover'] }
+    - { role: image_builder, tags: ['image'] }
     # - { role: podman_secrets, tags: ['secrets'] }
     # - { role: quadlet, tags: ['quadlet'] }
     # - { role: smd, tags: ['smd'] }
