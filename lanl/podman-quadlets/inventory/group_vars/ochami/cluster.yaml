@@ -4,7 +4,7 @@ cluster_nidlength: 3
 cluster_domain: "openchami.cluster"
 cluster_boot_ip: 172.16.0.254
 cluster_boot_interface: ens259f0
-cluster_env_key: "{{ cluster_name }}_ACCESS_TOKEN"
+cluster_env_key: "{{ cluster_name | upper }}_ACCESS_TOKEN"
 
 cluster_boot_ssh_pub_key: >-
   {{ lookup('ansible.builtin.file', '/root/.ssh/id_rsa.pub') }}

@@ -81,7 +81,7 @@
 
 - name: Set ochami_env
   ansible.builtin.set_fact:
-    ochami_env: "{{ { cluster_env_key: '{{ access_token_result.stdout }}'} }}"
+    ochami_env: "{{ { cluster_env_key: access_token_result.stdout } }}"
 
 # - name: Drop ochami groups.yaml
 #   template:
