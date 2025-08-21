@@ -44,23 +44,23 @@
   ansible.builtin.command: s3cmd mb s3://efi
   register: efi_bucket
   changed_when: "'Bucket' in efi_bucket.stdout"
-  when: '"s3://efi" not in s3_bucket_output.stdout_lines' 
+  when: '"s3://efi" not in s3_bucket_output.stdout' 
 
 - name: Set ACL to public for 'efi'
   command: s3cmd setacl s3://efi --acl-public
   changed_when: true
-  when: '"s3://efi" not in s3_bucket_output.stdout_lines' 
+  when: '"s3://efi" not in s3_bucket_output.stdout' 
 
 - name: Create S3 bucket 'boot-images'
   command: s3cmd mb s3://boot-images
   register: boot_images_bucket
   changed_when: "'Bucket' in boot_images_bucket.stdout"
-  when: '"s3://boot-images" not in s3_bucket_output.stdout_lines' 
+  when: '"s3://boot-images" not in s3_bucket_output.stdout' 
 
 - name: Set ACL to public for 'boot-images'
   command: s3cmd setacl s3://boot-images --acl-public
   changed_when: true
-  when: '"s3://boot-images" not in s3_bucket_output.stdout_lines' 
+  when: '"s3://boot-images" not in s3_bucket_output.stdout' 
 
 - name: Verify s3 bucket
   ansible.builtin.command: s3cmd ls
