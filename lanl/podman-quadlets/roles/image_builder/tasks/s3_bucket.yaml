@@ -12,6 +12,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
+- name: Import EPEL GPG key
+  ansible.builtin.rpm_key:
+    key: '{{ epel10_gpg_key }}'
+    state: present
+
 - name: Install EPEL release RPM
   ansible.builtin.dnf:
     name: '{{ epel10_url }}'
