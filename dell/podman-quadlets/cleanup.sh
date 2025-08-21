@@ -1,3 +1,4 @@
+echo "Removing openchami packages"
 dnf remove ochami -y
 dnf remove openchami -y
 systemctl stop openchami.target
@@ -5,8 +6,7 @@ rm -rf /etc/containers/systemd/registry.container
 rm -rf /etc/containers/systemd/minio.container
 sudo systemctl daemon-reload
 
-CORE_CONTAINER="omnia_core"
-
+echo "Removing openchami containers, volume and secrets"
 podman rm minio-server \
           registry \
           step-ca \
@@ -35,9 +35,17 @@ podman secret rm hydra_postgres_password \
                  postgres_multiple_databases \
                  bss_postgres_password -f
 
+echo "Removing s3cmd and regctl config"
+s3cmd del s3://efi
+s3cmd del s3://boot-images
+dnf remove s3cmd -y
+rm -rf ~/.regctl/config.json
+rm -rf /usr/local/bin/regctl
+
+echo "Removing openchami config directory"
 rm -rf /data/oci
 rm -rf /data/s3
 rm -rf /opt/workdir
 rm -rf /etc/ochami/configs/coredhcp.yaml
 
-echo "Cleanup complete. '$CORE_CONTAINER' preserved."
+echo "Cleanup complete."
