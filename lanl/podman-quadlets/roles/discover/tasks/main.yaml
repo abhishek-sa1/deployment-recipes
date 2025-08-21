@@ -12,21 +12,20 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-- name: Set access token
-  when: access_token_env is not defined
+- name: Set ochami_env
+  when: ochami_env is not defined
   block:
     - name: Generate access token
       ansible.builtin.shell: sudo bash -lc 'gen_access_token'
       register: access_token_result
       changed_when: false
 
-    - name: Set access token as environment variable
+    - name: Set ochami_env
       ansible.builtin.set_fact:
-        access_token_env: "{{ access_token_result.stdout }}"
+        ochami_env: "{{ { cluster_env_key: '{{ access_token_result.stdout }}'} }}"
 
 - name: Discover nodes
-  environment:
-    "{{ cluster_name | capitalize }}_ACCESS_TOKEN": "{{ access_token_env }}"
+  environment: "{{ ochami_env }}"
   block:
     - name: Create ochami nodes directory
       ansible.builtin.file:
