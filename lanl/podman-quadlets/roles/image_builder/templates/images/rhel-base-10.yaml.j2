@@ -9,11 +9,11 @@ options:
     - '--tls-verify=false'
 
 repos:
-  {% for repo in rhel_repos %}
+{% for repo in rhel_repos %}
   - alias: '{{ repo.name }}'
     url: '{{ repo.url }}'
     gpg: '{{ repo.gpg }}'
-  {% endfor %}
+{% endfor %}
 
 package_groups:
   - 'Minimal Install'
