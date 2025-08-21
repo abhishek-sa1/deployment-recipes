@@ -48,7 +48,7 @@
           register: openchami_discover
       rescue:
         - name: Failed to discover nodes
-          ansible.builtin.fail:
+          ansible.builtin.debug:
             msg: "Failed to discover nodes. Update inventory/group_vars/ochami/nodes.yaml with only new nodes and re-run the playbook. Error: {{ openchami_discover.stderr_lines }}"
 
     - name: Verify node created in smd
