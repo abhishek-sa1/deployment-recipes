@@ -74,11 +74,6 @@
     enabled: true
     daemon_reload: true
 
-# - name: Drop ochami nodes.yaml
-#   ansible.builtin.template:
-#     src: ochami/nodes.yaml.j2
-#     dest: '{{ ochami_dir }}/nodes.yaml'
-
 # - name: Drop ochami groups.yaml
 #   template:
 #     src: ochami/groups.yaml.j2

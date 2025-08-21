@@ -15,6 +15,21 @@ for CONTAINER in $(podman ps -a --format "{{.Names}}"); do
     fi
 done
 
+podman volume rm haproxy-certs \
+                 acme-certs \
+                 postgres-data \
+                 step-ca-db \
+                 step-root-ca \
+                 step-ca-home
+
+podman secret rm hydra_postgres_password \
+                 hydra_dsn \
+                 hydra_system_secret \
+                 smd_postgres_password \
+                 postgres_password \
+                 postgres_multiple_databases \
+                 bss_postgres_password
+
 rm -rf /data/oci
 rm -rf /data/s3
 rm -rf /opt/workdir
