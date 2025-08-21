@@ -18,5 +18,5 @@ ochami_bss_url: "{{ ochami_base_url }}/boot/v1"
 ochami_cloud_init_url: "{{ ochami_base_url }}/cloud-init"
 
 rhel_repos:
-  - { name: 'RHEL10_BaseOS', baseurl: '', gpg: '' }
-  - { name: 'RHEL10_AppStream', baseurl: '', gpg: '' }
+  - { name: 'RHEL10_BaseOS', url: '', gpg: '' }
+  - { name: 'RHEL10_AppStream', url: '', gpg: '' }
