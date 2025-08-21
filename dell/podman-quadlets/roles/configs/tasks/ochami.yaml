@@ -1,0 +1,74 @@
+- name: Get latest openchami response
+  ansible.builtin.uri:
+    url: "{{ openchami_api_url }}"
+    return_content: true
+  register: openchami_release_response
+
+- name: Extract openchami RPM download URL
+  ansible.builtin.set_fact:
+    openchami_rpm_url: "{{ openchami_release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].browser_download_url') | first }}"
+    openchami_rpm_name: "{{ openchami_release_response.content | from_json | json_query('assets[?ends_with(name, `.rpm`)].name') | first }}"
+
+- name: Download the openchami RPM file
+  ansible.builtin.get_url:
+    url: "{{ openchami_rpm_url }}"
+    dest: "{{ ochami_work_dir }}/{{ openchami_rpm_name }}"
+
+- name: Install the openchami
+  ansible.builtin.dnf:
+    name: "{{ ochami_work_dir }}/{{ openchami_rpm_name }}"
+    state: present
+    disable_gpg_check: true
+
+- name: Update openchami certificates
+  ansible.builtin.shell: |
+    sudo openchami-certificate-update update {{ cluster_name }}.{{ cluster_domain }}
+  changed_when: true
+
+- name: Get ochami client respone
+  ansible.builtin.uri:
+    url: "{{ ochami_client_api_url }}"
+    return_content: true
+  register: ochami_client_release_response
+
+- name: Extract ochami RPM download URL
+  ansible.builtin.set_fact:
+    ochami_client_rpm_url: "{{ ochami_client_release_response.content | from_json | json_query('assets[?ends_with(name, `amd64.rpm`)].browser_download_url') | first }}"
+    ochami_client_rpm_name: "{{ ochami_client_release_response.content | from_json | json_query('assets[?ends_with(name, `amd64.rpm`)].name') | first }}"
+
+- name: Download the ochami client RPM file
+  ansible.builtin.get_url:
+    url: "{{ ochami_client_rpm_url }}"
+    dest: "{{ ochami_work_dir }}/{{ ochami_client_rpm_name }}"
+
+- name: Install ochami CLI
+  ansible.builtin.dnf:
+    name: "{{ ochami_work_dir }}/{{ ochami_client_rpm_name }}"
+    state: present
+    disable_gpg_check: true
+
+- name: Configure ochami CLI
+  ansible.builtin.template:
+    src: ochami/config.yaml.j2
+    dest: '{{ ochami_dir }}/config.yaml'
+
+- name: Start the openchami service (This task will take some time)
+  ansible.builtin.systemd:
+    name: openchami.target
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Generate access token
+  ansible.builtin.shell: sudo bash -lc 'gen_access_token'
+  register: access_token_result
+  changed_when: false
+
+- name: Set ochami_env
+  ansible.builtin.set_fact:
+    ochami_env: "{{ { cluster_env_key: access_token_result.stdout } }}"
+
+# - name: Drop ochami groups.yaml
+#   template:
+#     src: ochami/groups.yaml.j2
+#     dest: '{{ ochami_dir }}/groups.yaml'

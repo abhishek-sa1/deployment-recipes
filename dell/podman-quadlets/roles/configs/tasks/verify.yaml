@@ -1,0 +1,14 @@
+- name: Verify ochami installation
+  block:
+    - name: Verify openchami service
+      ansible.builtin.import_tasks: verify_ochami.yaml
+  rescue:
+    - name: Restart openchami in case of error
+      ansible.builtin.systemd:
+        name: openchami.target
+        state: restarted
+        enabled: true
+        daemon_reload: true
+
+    - name: Verify openchami service
+      ansible.builtin.import_tasks: verify_ochami.yaml

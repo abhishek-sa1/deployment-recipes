@@ -1,0 +1,7 @@
+- name: Drop coredhcp config file
+  ansible.builtin.template:
+    src: coredhcp/coredhcp.yaml.j2
+    dest: '{{ ochami_config_dir }}/coredhcp.yaml'
+    owner: root
+    group: root
+    mode: '{{ file_perm_rw }}'
