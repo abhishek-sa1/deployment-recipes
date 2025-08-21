@@ -1,0 +1,57 @@
+#  Copyright 2025 Dell Inc. or its subsidiaries. All Rights Reserved.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+- name: Create ochami images directory
+  ansible.builtin.file:
+    path: '{{ ochami_work_dir }}/images'
+    state: directory
+    mode: '{{ file_perm_rwx }}'
+
+- name: Configure the base osimage
+  ansible.builtin.template:
+    src: "{{ rhel_base_image_template }}"
+    dest: "{{ ochami_work_dir }}/images/rhel-base-10.yaml"
+    mode: '{{ file_perm_rw }}'
+
+- name: Build base osimage
+  block:
+    - name: Build base osimage (This task will take some time)
+      ansible.builtin.command:  
+        cmd: >
+          podman run --rm
+          --device /dev/fuse
+          --network host
+          -v {{ ochami_work_dir }}/images/rhel-base-10.yaml:/home/builder/config.yaml
+          ghcr.io/openchami/image-build:latest
+          image-build --config config.yaml --log-level DEBUG
+      changed_when: true
+      register: build_base_osimage
+  rescue:
+    - name: Failed to build base osimage
+      ansible.builtin.debug:
+        msg: "Error encountered while building base osimage. Error: {{ build_base_osimage.stderr_lines }}"
+
+- name: Verify the base osimage created
+  ansible.builtin.command: regctl repo ls {{ cluster_name }}.{{ cluster_domain }}:5000
+  changed_when: false
+  register: verify_base_osimage
+
+- name: Fail if base osimage not created
+  ansible.builtin.fail:
+    msg: "Failed to build base osimage {{ rhel_base_image }}"
+  when: rhel_base_image in verify_base_osimage.stdout
+
+- name: Verify base osimage output
+  ansible.builtin.debug:
+    msg: "{{ verify_base_osimage.stdout_lines }}"

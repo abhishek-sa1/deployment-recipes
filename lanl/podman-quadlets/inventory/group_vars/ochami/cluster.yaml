@@ -16,3 +16,6 @@ ochami_base_url: "https://{{ cluster_name }}.{{ cluster_domain }}:8443"
 ochami_smd_url: "{{ ochami_base_url }}/hsm/v2"
 ochami_bss_url: "{{ ochami_base_url }}/boot/v1"
 ochami_cloud_init_url: "{{ ochami_base_url }}/cloud-init"
+
+rhel_appstream_base_url: ''
+rhel_baseos_base_url: ''

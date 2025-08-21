@@ -1,0 +1,36 @@
+options:
+  layer_type: 'base'
+  name: 'rhel-base'
+  publish_tags: '10.0'
+  pkg_manager: 'dnf'
+  parent: 'scratch'
+  publish_registry: '{{ cluster_name }}.{{ cluster_domain }}:5000/{{ cluster_name }}'
+  registry_opts_push:
+    - '--tls-verify=false'
+
+repos:
+  - alias: 'RHEL_10_BaseOS'
+    url: '{{ rhel_baseos_base_url }}'
+
+  - alias: 'RHEL_10_AppStream'
+    url: '{{ rhel_appstream_base_url }}'
+
+package_groups:
+  - 'Minimal Install'
+  - 'Development Tools'
+
+packages:
+  - kernel
+  - wget
+  - dracut-live
+  - cloud-init
+  - chrony
+  - rsyslog
+  - sudo
+
+cmds:
+  - cmd: 'dracut --add "dmsquash-live livenet network-manager" --kver $(basename /lib/modules/*) -N -f --logfile /tmp/dracut.log 2>/dev/null'
+    loglevel: INFO
+  - cmd: 'echo DRACUT LOG:; cat /tmp/dracut.log'
+    loglevel: INFO
+  - cmd: "useradd -mG wheel -p '$6$gZGyFUSYf8Js.tic$Fpj4Sx1m4/cWcjDTipFlZqwTDhb4rIMM7MZGnhFbvitNWV22KhaHdoUbpNxac5..N52zFzVFcAX/7uQ57PyxC.' testuser"

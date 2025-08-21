@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-
 - name: Import EPEL GPG key
   ansible.builtin.rpm_key:
     key: '{{ epel10_gpg_key }}'
@@ -30,7 +29,7 @@
 
 - name: Create s3cfg
   ansible.builtin.template:
-    src: s3cfg.j2
+    src: s3/s3cfg.j2
     dest: '/root/.s3cfg'
     mode: '{{ file_perm_rw }}'
 

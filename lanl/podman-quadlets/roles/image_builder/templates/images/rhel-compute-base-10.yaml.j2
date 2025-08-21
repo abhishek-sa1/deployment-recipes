@@ -1,0 +1,21 @@
+options:
+  layer_type: base
+  name: rhel-compute
+  publish_tags: '10.0'
+  pkg_manager: dnf
+  parent: {{ cluster_name }}.{{ cluster_domain }}:5000/demo/rhel-base:10.0
+  registry_opts_push:
+    - --tls-verify=false
+  publish_s3:
+    s3_prefix: compute/rhel-compute/
+    s3_bucket: boot-images
+  publish_registry: {{ cluster_name }}.{{ cluster_domain }}:5000/demo
+
+repos:
+  - alias: Epel10
+    url: https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/
+    gpg: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-10
+
+packages:
+  - git
+  - nfs-utils
