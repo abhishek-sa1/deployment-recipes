@@ -43,7 +43,7 @@
       block:
         - name: Discover ochami nodes
           ansible.builtin.shell: |
-            ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml
+            ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml --overwrite
           changed_when: true
           register: openchami_discover
       rescue:

@@ -23,6 +23,6 @@
         state: restarted
         enabled: true
         daemon_reload: true
-    
+
     - name: Verify openchami service
       ansible.builtin.import_tasks: verify_ochami.yaml
