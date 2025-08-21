@@ -13,6 +13,7 @@ repos:
   - alias: '{{ repo.name }}'
     url: '{{ repo.url }}'
     gpg: '{{ repo.gpg }}'
+  {% endfor %}
 
 package_groups:
   - 'Minimal Install'
