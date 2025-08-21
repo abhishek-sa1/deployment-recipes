@@ -39,10 +39,17 @@
         dest: '{{ ochami_work_dir }}/nodes/nodes.yaml'
         mode: '{{ file_perm_rw }}'
 
-    - name: Discovery ochami nodes
-      ansible.builtin.shell: |
-        ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml
-      changed_when: true
+    - name: Discover ochami nodes
+      block:
+        - name: Discover ochami nodes
+          ansible.builtin.shell: |
+            ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml
+          changed_when: true
+          register: openchami_discover
+      rescue:
+        - name: Failed to discover nodes
+          ansible.builtin.fail:
+            msg: "Failed to discover nodes. Update inventory/group_vars/ochami/nodes.yaml with only new nodes and re-run the playbook. Error: {{ openchami_discover.stderr_lines }}"
 
     - name: Verify node created in smd
       ansible.builtin.shell: |
