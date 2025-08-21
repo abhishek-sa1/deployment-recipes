@@ -3,7 +3,7 @@ options:
   name: '{{ rhel_base_compute_image_name }}'
   publish_tags: '{{ rhel_tag }}'
   pkg_manager: dnf
-  parent: '{{ cluster_name }}.{{ cluster_domain }}:5000/{{ rhel_base_image }}: {{ rhel_tag }}'
+  parent: '{{ cluster_name }}.{{ cluster_domain }}:5000/{{ rhel_base_image }}:{{ rhel_tag }}'
   registry_opts_pull:
     - '--tls-verify=false'
   publish_s3:
