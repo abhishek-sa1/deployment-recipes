@@ -27,7 +27,6 @@
 - name: Import registry task
   ansible.builtin.import_tasks: registry.yaml
 
-
 # - name: Import configurator task
 #   ansible.builtin.import_tasks: configurator.yaml
 

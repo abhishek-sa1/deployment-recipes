@@ -21,3 +21,4 @@
     - '{{ data_oci_dir }}'
     - '{{ data_s3_dir }}'
     - '{{ ochami_work_dir }}'
+    - '{{ ochami_config_dir }}'
