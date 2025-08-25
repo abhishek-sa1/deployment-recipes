@@ -10,9 +10,9 @@ options:
 
 repos:
 {% for repo in rhel_repos %}
-  - alias: '{{ repo.name }}'
-    url: '{{ repo.url }}'
-    gpg: '{{ repo.gpg }}'
+- alias: '{{ repo.name }}'
+  url: '{{ repo.url }}'
+  gpg: '{{ repo.gpg }}'
 {% endfor %}
 
 package_groups:
