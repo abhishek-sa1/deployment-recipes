@@ -55,6 +55,10 @@
 - name: Import coredhcp task
   ansible.builtin.import_tasks: coredhcp.yaml
 
+- name: Configure cluster FQDN for certificates
+  ansible.builtin.command: sudo openchami-certificate-update update {{ cluster_name }}.{{ cluster_domain }}
+  changed_when: true
+
 - name: Start the openchami service (This task will take some time)
   ansible.builtin.systemd:
     name: openchami.target
