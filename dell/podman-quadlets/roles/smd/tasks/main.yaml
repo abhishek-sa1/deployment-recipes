@@ -20,17 +20,27 @@
         dest: '{{ ochami_work_dir }}/nodes/groups.yaml'
         mode: '{{ file_perm_rw }}'
 
-    - name: Populate SMD with ochami CLI
-      ansible.builtin.command:
-        argv:
-          - /usr/bin/ochami
-          - discover
-          - static
-          - --overwrite
-          - -d
-          - "{{ ochami_work_dir }}/nodes/nodes.yaml"
-          - -f
-          - yaml
+    - name: Discover ochami nodes
+      block:
+        - name: Discover ochami nodes
+          ansible.builtin.shell: |
+            ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml --overwrite
+          changed_when: true
+          register: openchami_discover
+      rescue:
+        - name: Failed to discover nodes
+          ansible.builtin.debug:
+            msg: "Failed to discover nodes. Update inventory/group_vars/ochami/nodes.yaml with only new nodes and re-run the playbook. Error: {{ openchami_discover.stderr_lines }}"
+
+    - name: Verify node created in smd
+      ansible.builtin.shell: |
+        ochami smd component get | jq '.Components[] | select(.Type == "Node")'
+      changed_when: true
+      register: openchami_smd_status
+
+    - name: Openchami smd status output
+      ansible.builtin.debug:
+        msg: "{{ openchami_smd_status.stdout_lines }}"
 
     - name: "Get SMD group data"
       ansible.builtin.shell: |
