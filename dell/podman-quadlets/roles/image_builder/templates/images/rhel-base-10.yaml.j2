@@ -16,32 +16,17 @@ repos:
 {% endfor %}
 
 package_groups:
-  - 'Minimal Install'
-  - 'Development Tools'
+- 'Minimal Install'
+- 'Development Tools'
 packages:
-  - chrony
-  - cloud-init
-  - systemd
-  - dracut-live
-  - dracut-network
-  - squashfs-tools
-  - kernel
-  - rsyslog
-  - sudo
-  - wget
+- chrony
+- cloud-init
+- systemd
+- dracut-live
+- kernel
+- rsyslog
+- sudo
+- wget
 cmds:
-  # Step 1: Create safe stubs for systemd-sysroot and fstab-check
-  - cmd: 'echo -e "#!/bin/bash\nexit 0" > /usr/lib/systemd/systemd-sysroot'
-  - cmd: 'chmod +x /usr/lib/systemd/systemd-sysroot'
-  - cmd: 'echo -e "#!/bin/bash\nexit 0" > /usr/lib/systemd/systemd-sysroot-fstab-check'
-  - cmd: 'chmod +x /usr/lib/systemd/systemd-sysroot-fstab-check'
-  - cmd: 'dracut --add "dmsquash-live livenet network-manager systemd" --install "/usr/lib/systemd/systemd-sysroot-fstab-check" --kver $(basename /lib/modules/*) -N -f --logfile /tmp/dracut.log 2>/dev/null'
-  - cmd: 'echo DRACUT LOG:; cat /tmp/dracut.log'
- 
- 
-  # Step 2: Generate initramfs with required modules
-  #  - cmd: 'dracut --add "systemd dmsquash-live livenet network-manager" --kver $(basename $(ls -d /lib/modules/* | head -n1)) -N -f --logfile /tmp/dracut.log'
- 
-  # Step 3: Output the dracut log for verification
-  #- cmd: 'echo "DRACUT LOG:"'
-    #  - cmd: 'cat /tmp/dracut.log'
+- cmd: 'dracut --add "dmsquash-live livenet network-manager" --kver $(basename /lib/modules/*) -N -f --logfile /tmp/dracut.log 2>/dev/null'
+- cmd: 'echo DRACUT LOG:; cat /tmp/dracut.log'

@@ -14,16 +14,16 @@ options:
     - '--tls-verify=false'
 
 repos:
-  - alias: Epel10
-    url: https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/
-    gpg: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-10
-
+- alias: 'Epel10'
+   url: 'https://dl.fedoraproject.org/pub/epel/10.0/Everything/x86_64/'
+   gpg: 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-10'
+ 
 packages:
-  - git
-  - nfs-utils
-  - tcpdump
-  - traceroute
-  - vim
-
+- git
+- nfs-utils
+- tcpdump
+- traceroute
+- vim
+ 
 cmds:
-  - cmd: "useradd -mG wheel -p '$6$VHdSKZNm$O3iFYmRiaFQCemQJjhfrpqqV7DdHBi5YpY6Aq06JSQpABPw.3d8PQ8bNY9NuZSmDv7IL/TsrhRJ6btkgKaonT.' testuser"
+- cmd: "useradd -mG wheel -p '$6$VHdSKZNm$O3iFYmRiaFQCemQJjhfrpqqV7DdHBi5YpY6Aq06JSQpABPw.3d8PQ8bNY9NuZSmDv7IL/TsrhRJ6btkgKaonT.' testuser"
