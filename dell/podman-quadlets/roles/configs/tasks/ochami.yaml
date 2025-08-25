@@ -52,6 +52,9 @@
     src: ochami/config.yaml.j2
     dest: '{{ ochami_dir }}/config.yaml'
 
+- name: Import coredhcp task
+  ansible.builtin.import_tasks: coredhcp.yaml
+
 - name: Start the openchami service (This task will take some time)
   ansible.builtin.systemd:
     name: openchami.target

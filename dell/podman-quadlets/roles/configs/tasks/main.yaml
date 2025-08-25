@@ -13,9 +13,6 @@
 - name: Import registry task
   ansible.builtin.import_tasks: registry.yaml
 
-- name: Import coredhcp task
-  ansible.builtin.import_tasks: coredhcp.yaml
-
 - name: Import ochami task
   ansible.builtin.import_tasks: ochami.yaml
 
