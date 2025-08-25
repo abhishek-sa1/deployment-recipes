@@ -37,7 +37,7 @@
     msg: "{{ verify_base_compute_osimage.stdout_lines }}"
 
 - name: Verify image, kernel and initramfs in S3
-  ansible.builtin.command: s3cmd ls -Hr s3://boot-images | grep {{ rhel_base_compute_image }}
+  ansible.builtin.command: s3cmd ls -Hr s3://boot-images | grep {{ rhel_base_compute_image }} | grep {{ rhel_tag }}
   changed_when: false
   register: verify_s3_image
 

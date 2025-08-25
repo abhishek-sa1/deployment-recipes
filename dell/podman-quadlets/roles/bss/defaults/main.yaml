@@ -1,0 +1,4 @@
+rhel_base_image_name: rhel-base
+rhel_base_image: '{{ cluster_name }}/{{ rhel_base_image_name }}'
+rhel_base_compute_image_name: rhel-compute
+rhel_base_compute_image: '{{ cluster_name }}/{{ rhel_base_compute_image_name }}'

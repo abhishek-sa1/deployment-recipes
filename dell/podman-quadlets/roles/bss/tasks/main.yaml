@@ -1,36 +1,28 @@
 ---
-- name: populate bss with node boot config
-  ansible.builtin.uri:
-    url: '{{ ochami_bss_url }}/bootparameters'
-    method: "DELETE"
-    status_code:
-      - 200
-      - 201
-      - 400
-    headers:
-      Authorization: 'Bearer {{ access_token.stdout }}'
-    body_format: json
-    body:
-      macs: '{{ bss_macs }}'
-      initrd: '{{ bss_initrd_url }}'
-      kernel: '{{ bss_kernel_url }}'
-      params: '{{ bss_params }}'
-  register: add_bootparams
+- name: Configure the bss
+  environment: "{{ ochami_env }}"
+  block:
+    - name: Create bss directory
+      ansible.builtin.file:
+        path: '{{ ochami_work_dir }}/bss'
+        state: directory
+        mode: '{{ file_perm_rwx }}'
 
-- name: populate bss with node boot config
-  ansible.builtin.uri:
-    url: '{{ ochami_bss_url }}/bootparameters'
-    method: "POST"
-    status_code:
-      - 200
-      - 201
-      - 400
-    headers:
-      Authorization: 'Bearer {{ access_token.stdout }}'
-    body_format: json
-    body:
-      macs: '{{ bss_macs }}'
-      initrd: '{{ bss_initrd_url }}'
-      kernel: '{{ bss_kernel_url }}'
-      params: '{{ bss_params }}'
-  register: add_bootparams
+    - name: Load bss template
+      ansible.builtin.template:
+        src: bss.yaml.j2
+        dest: '{{ ochami_work_dir }}/bss/bss-compute.yaml'
+        mode: '{{ file_perm_rw }}'
+
+    - name: Set boot configuration
+      ansible.builtin.command: ochami bss boot params set -f yaml -d @{{ ochami_work_dir }}/bss/bss-compute.yaml
+      changed_when: true
+
+    - name: Verify boot params set
+      ansible.builtin.command: ochami bss boot params get -F yaml
+      changed_when: false
+      register: boot_params_output
+
+    - name: Verify boot params output
+      ansible.builtin.debug:
+        msg: "{{ boot_params_output.stdout_lines }}"
