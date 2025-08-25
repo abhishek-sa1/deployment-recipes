@@ -4,7 +4,7 @@
 
 - name: Load ci defaults template
   ansible.builtin.template:
-    src: ci-defaults.yaml.j2
+    src: ci-defaults.yaml
     dest: '{{ ochami_work_dir }}/cloud-init/ci-defaults.yaml'
     mode: '{{ file_perm_rw }}'
 
