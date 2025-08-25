@@ -1,5 +1,5 @@
 - name: Load ci group compute template
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: ci-group-compute.yaml.j2
     dest: '{{ ochami_work_dir }}/cloud-init/ci-group-compute.yaml'
     mode: '{{ file_perm_rw }}'
