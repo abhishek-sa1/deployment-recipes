@@ -65,8 +65,3 @@
     state: restarted
     enabled: true
     daemon_reload: true
-
-# - name: Drop ochami groups.yaml
-#   template:
-#     src: ochami/groups.yaml.j2
-#     dest: '{{ ochami_dir }}/groups.yaml'

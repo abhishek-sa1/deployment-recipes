@@ -1,5 +1,4 @@
 ---
----
 - name: Configure the cloud-init
   environment: "{{ ochami_env }}"
   block:

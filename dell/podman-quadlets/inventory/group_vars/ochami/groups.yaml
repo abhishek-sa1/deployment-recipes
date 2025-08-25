@@ -14,4 +14,3 @@ ochami_groups:
   runcmds: '{{ xnames }}'
   hosts: '{{ xnames }}'
   chrony: '{{ xnames }}'
-  disk_config: [ 'x1000c1s7b1n0' ]
