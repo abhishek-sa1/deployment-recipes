@@ -63,7 +63,7 @@
         - '{{ ochami_groups | dict2items }}'
 
     - name: Check for group updates
-      include_tasks: update_smd_groups.yaml
+      ansible.builtin.include_tasks: update_smd_groups.yaml
       with_items: '{{ ochami_groups | default({}) | dict2items }}'
       loop_control:
         loop_var: grp

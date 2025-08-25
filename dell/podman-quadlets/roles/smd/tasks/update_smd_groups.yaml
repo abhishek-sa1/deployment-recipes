@@ -27,6 +27,6 @@
 
 - name: '{{ grp.key }} | POST group'
   ansible.builtin.shell: |
-    /usr/bin/ochami " smd group add -m {{ grp.value | join(",") }} {{ grp.key }}
+    /usr/bin/ochami smd group add -m {{ grp.value | join(",") }} {{ grp.key }}
   when:
     - smd_group_changed | default(false) | bool
