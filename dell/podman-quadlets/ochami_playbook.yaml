@@ -4,3 +4,5 @@
     - { role: configs, tags: ['configs'] }
     - { role: discover, tags: ['discover'] }
     - { role: image_builder, tags: ['image'] }
+    # - { role: bss, tags: ['bss'] }
+    # - { role: cloud_init, tags: ['cloud_init'] }
