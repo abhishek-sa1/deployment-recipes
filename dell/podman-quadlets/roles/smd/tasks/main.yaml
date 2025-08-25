@@ -17,7 +17,7 @@
     - name: Drop ochami groups.yaml
       template:
         src: ochami/groups.yaml.j2
-        dest: '{{{ ochami_work_dir }}/nodes/groups.yaml'
+        dest: '{{ ochami_work_dir }}/nodes/groups.yaml'
         mode: '{{ file_perm_rw }}'
 
     - name: Populate SMD with ochami CLI
