@@ -29,5 +29,5 @@ packages:
 
 cmds:
 {% for cmd in base_image_commands %}
-  - {{ cmd }}
+  - cmd: "{{ cmd }}"
 {% endfor %}
