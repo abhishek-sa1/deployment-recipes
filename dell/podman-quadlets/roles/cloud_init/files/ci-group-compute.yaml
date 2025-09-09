@@ -1,5 +1,5 @@
-- name: compute
-  description: "compute config"
+- name: {{ group_name }}
+  description: "{{ group_name }} config"
   file:
     encoding: plain
     content: |

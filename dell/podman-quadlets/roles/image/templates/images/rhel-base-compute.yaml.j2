@@ -7,7 +7,7 @@ options:
   registry_opts_pull:
     - '--tls-verify=false'
   publish_s3: 'http://{{ cluster_name }}.{{ cluster_domain }}:9000'
-  s3_prefix: 'compute/{{ rhel_base_compute_image_name }}/'
+  s3_prefix: '{{ group_name }}/{{ rhel_base_compute_image_name }}/'
   s3_bucket: 'boot-images'
   publish_registry: '{{ cluster_name }}.{{ cluster_domain }}:5000/{{ cluster_name }}'
   registry_opts_push:
@@ -30,4 +30,6 @@ packages:
 {% endfor %}
 
 cmds:
-  - cmd: "useradd -mG wheel -p '$6$VHdSKZNm$O3iFYmRiaFQCemQJjhfrpqqV7DdHBi5YpY6Aq06JSQpABPw.3d8PQ8bNY9NuZSmDv7IL/TsrhRJ6btkgKaonT.' testuser"
+{% for cmd in base_compute_image_commands %}
+  - {{ cmd }}
+{% endfor %}
