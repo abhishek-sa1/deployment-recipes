@@ -6,3 +6,4 @@ openchami_work_dir: /opt/workdir
 ci_defaults_dest: '{{ openchami_work_dir }}/cloud-init/ci-defaults.yaml'
 ci_group_compute_template: ci-group-compute.yaml.j2
 ci_group_compute_dest: '{{ openchami_work_dir }}/cloud-init/ci-group-compute.yaml'
+ssh_key_var: '{{ ds.meta_data.instance_data.v1.public_keys }}'

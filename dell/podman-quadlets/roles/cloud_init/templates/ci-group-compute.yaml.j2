@@ -12,5 +12,5 @@
         settings: [no_replace, recurse_list]
       users:
         - name: root
-          ssh_authorized_keys: {{ ds.meta_data.instance_data.v1.public_keys }}
+          ssh_authorized_keys: "{{ ssh_key_var }}"
       disable_root: false
