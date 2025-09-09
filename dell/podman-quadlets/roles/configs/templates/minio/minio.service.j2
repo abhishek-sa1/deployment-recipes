@@ -14,8 +14,8 @@ PublishPort=9000:9000
 PublishPort=9001:9001
 
 # Environemnt Variables
-Environment=MINIO_ROOT_USER=admin
-Environment=MINIO_ROOT_PASSWORD=admin123
+Environment=MINIO_ROOT_USER={{ minio_s3_user }}
+Environment=MINIO_ROOT_PASSWORD={{ minio_s3_password }}
 
 # Command to run in container
 Exec=server /data --console-address :9001

@@ -21,3 +21,12 @@
 
 - name: Import verify task
   ansible.builtin.import_tasks: verify.yaml
+
+- name: Import regctl tasks
+  ansible.builtin.import_tasks: regctl.yaml
+
+- name: Import s3 bucket tasks
+  ansible.builtin.import_tasks: s3_bucket.yaml
+
+- name: Import policy update tasks
+  ansible.builtin.import_tasks: policy_update.yaml
