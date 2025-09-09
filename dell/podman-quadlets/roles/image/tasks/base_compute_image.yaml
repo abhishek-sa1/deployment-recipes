@@ -11,7 +11,7 @@
         cmd: >
           podman run --rm
           --device /dev/fuse
-          --network host -e S3_ACCESS=admin -e S3_SECRET=admin123
+          --network host -e S3_ACCESS={{ minio_s3_user }} -e S3_SECRET={{ minio_s3_password }}
           -v {{ ochami_work_dir }}/images/{{ rhel_base_compute_image_name }}-{{ rhel_tag }}.yaml:/home/builder/config.yaml
           ghcr.io/openchami/image-build:latest
           image-build --config config.yaml --log-level DEBUG
