@@ -5,12 +5,8 @@ _xnames: |
 
 xnames: '{{ _xnames | from_yaml }}'
 
+group_name: compute
+
 ochami_groups:
   compute: '{{ xnames }}'
-  ssh: '{{ xnames }}'
-  ssh_host_keys: '{{ xnames }}'
-  munge: '{{ xnames }}'
-  slurm: '{{ xnames }}'
-  runcmds: '{{ xnames }}'
-  hosts: '{{ xnames }}'
-  chrony: '{{ xnames }}'
+
