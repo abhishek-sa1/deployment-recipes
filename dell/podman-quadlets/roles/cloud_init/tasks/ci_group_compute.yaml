@@ -1,5 +1,5 @@
 - name: Load ci group {{ group_name }} template
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: '{{ ci_group_compute_template }}'
     dest: '{{ ci_group_compute_dest }}'
     mode: '{{ file_perm_rw }}'
