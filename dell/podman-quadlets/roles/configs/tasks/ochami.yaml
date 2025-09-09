@@ -12,7 +12,7 @@
 - name: Download the openchami RPM file
   ansible.builtin.get_url:
     url: "{{ openchami_rpm_url }}"
-    dest: "{{ ochami_work_dir }}/{{ openchami_rpm_name }}"
+    dest: "{{ openchami_work_dir }}/{{ openchami_rpm_name }}"
   register: download_openchami
   until: download_openchami is not failed
   retries: "{{ max_retries }}"
@@ -20,7 +20,7 @@
 
 - name: Install the openchami
   ansible.builtin.dnf:
-    name: "{{ ochami_work_dir }}/{{ openchami_rpm_name }}"
+    name: "{{ openchami_work_dir }}/{{ openchami_rpm_name }}"
     state: present
     disable_gpg_check: true
 
@@ -38,7 +38,7 @@
 - name: Download the ochami client RPM file
   ansible.builtin.get_url:
     url: "{{ ochami_client_rpm_url }}"
-    dest: "{{ ochami_work_dir }}/{{ ochami_client_rpm_name }}"
+    dest: "{{ openchami_work_dir }}/{{ ochami_client_rpm_name }}"
   register: download_ochami
   until: download_ochami is not failed
   retries: "{{ max_retries }}"
@@ -46,7 +46,7 @@
 
 - name: Install ochami CLI
   ansible.builtin.dnf:
-    name: "{{ ochami_work_dir }}/{{ ochami_client_rpm_name }}"
+    name: "{{ openchami_work_dir }}/{{ ochami_client_rpm_name }}"
     state: present
     disable_gpg_check: true
 

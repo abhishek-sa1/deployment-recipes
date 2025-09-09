@@ -4,7 +4,7 @@
   block:
     - name: Create cloud-init directory
       ansible.builtin.file:
-        path: '{{ ochami_work_dir }}/cloud-init'
+        path: '{{ openchami_work_dir }}/cloud-init'
         state: directory
         mode: '{{ file_perm_rwx }}'
 

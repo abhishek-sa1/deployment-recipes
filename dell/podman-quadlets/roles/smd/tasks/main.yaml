@@ -4,27 +4,27 @@
   block:
     - name: Create ochami nodes directory
       ansible.builtin.file:
-        path: '{{ ochami_work_dir }}/nodes'
+        path: '{{ openchami_work_dir }}/nodes'
         state: directory
         mode: '{{ file_perm_rwx }}'
 
     - name: Drop ochami nodes.yaml
       ansible.builtin.template:
         src: nodes.yaml.j2
-        dest: '{{ ochami_work_dir }}/nodes/nodes.yaml'
+        dest: '{{ openchami_work_dir }}/nodes/nodes.yaml'
         mode: '{{ file_perm_rw }}'
 
     - name: Drop ochami groups.yaml
       template:
         src: groups.yaml.j2
-        dest: '{{ ochami_work_dir }}/nodes/groups.yaml'
+        dest: '{{ openchami_work_dir }}/nodes/groups.yaml'
         mode: '{{ file_perm_rw }}'
 
     - name: Discover ochami nodes
       block:
         - name: Discover ochami nodes
           ansible.builtin.shell: |
-            ochami discover static -f yaml -d @{{ ochami_work_dir }}/nodes/nodes.yaml --overwrite
+            ochami discover static -f yaml -d @{{ openchami_work_dir }}/nodes/nodes.yaml --overwrite
           changed_when: true
           register: openchami_discover
       rescue:
