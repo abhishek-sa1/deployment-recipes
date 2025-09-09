@@ -12,5 +12,5 @@
         settings: [no_replace, recurse_list]
       users:
         - name: root
-          ssh_authorized_keys: "{{ ssh_key_var }}"
+          ssh_authorized_keys: "{{ read_ssh_key.stdout }}"
       disable_root: false
