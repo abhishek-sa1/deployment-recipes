@@ -31,5 +31,5 @@ packages:
 
 cmds:
 {% for cmd in base_compute_image_commands %}
-  - {{ cmd }}
+  - cmd: "{{ cmd }}"
 {% endfor %}
