@@ -30,7 +30,7 @@
 - name: Fail if {{ rhel_base_compute_image_name }} not created
   ansible.builtin.fail:
     msg: "Failed to build {{ rhel_base_compute_image_name }} osimage {{ rhel_base_compute_image }}"
-  when: rhel_base_compute_image not in verify_base_compute_osimage.stdout
+  when: rhel_base_compute_image not in verify_base_compute_osimage.stdout_lines
 
 - name: Verify {{ rhel_base_compute_image_name }} osimage output
   ansible.builtin.debug:

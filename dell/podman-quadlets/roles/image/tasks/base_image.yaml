@@ -36,7 +36,7 @@
 - name: Fail if base osimage not created
   ansible.builtin.fail:
     msg: "Failed to build base osimage {{ rhel_base_image }}"
-  when: rhel_base_image not in verify_base_osimage.stdout
+  when: rhel_base_image not in verify_base_osimage.stdout_lines
 
 - name: Verify base osimage output
   ansible.builtin.debug:
