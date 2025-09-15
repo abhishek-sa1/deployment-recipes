@@ -1,7 +1,7 @@
 rhel_base_compute_image_name: rhel-compute
 bss_template: bss.yaml.j2
 openchami_work_dir: /opt/workdir
-bss_dest: '{{ openchami_work_dir }}/boot/bss-compute.yaml'
+bss_dest: '{{ openchami_work_dir }}/boot/bss-{{ group_name }}.yaml'
 file_perm_rw: '0644'
 file_perm_rwx: '0755'
 bss_params_cloud_init: 'ds=nocloud;s=http://{{ cluster_boot_ip }}:8081/cloud-init/'
