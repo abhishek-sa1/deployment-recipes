@@ -3,6 +3,8 @@
     path: '{{ item }}'
     state: directory
     mode: '{{ file_perm_rwx }}'
+    owner: root
+    group: root
   with_items:
     - '{{ data_oci_dir }}'
     - '{{ data_s3_dir }}'

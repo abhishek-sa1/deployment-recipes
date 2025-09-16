@@ -13,6 +13,7 @@
   ansible.builtin.get_url:
     url: "{{ openchami_rpm_url }}"
     dest: "{{ openchami_work_dir }}/{{ openchami_rpm_name }}"
+    mode: "{{ file_perm_rwx }}"
   register: download_openchami
   until: download_openchami is not failed
   retries: "{{ max_retries }}"
@@ -39,6 +40,7 @@
   ansible.builtin.get_url:
     url: "{{ ochami_client_rpm_url }}"
     dest: "{{ openchami_work_dir }}/{{ ochami_client_rpm_name }}"
+    mode: "{{ file_perm_rwx }}"
   register: download_ochami
   until: download_ochami is not failed
   retries: "{{ max_retries }}"
