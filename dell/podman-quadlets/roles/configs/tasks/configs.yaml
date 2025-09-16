@@ -9,3 +9,4 @@
     - '{{ openchami_work_dir }}'
     - '{{ openchami_config_dir }}'
     - '{{ ochami_dir }}'
+    - '{{ s3_work_dir }}'
