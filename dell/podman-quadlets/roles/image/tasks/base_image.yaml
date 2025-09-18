@@ -19,7 +19,7 @@
           --device /dev/fuse
           --network host
           {{ rhel_base_mounts }}
-          ghcr.io/openchami/image-build:latest
+          {{ image_build_name }}
           image-build --config config.yaml --log-level DEBUG
       changed_when: true
       register: build_base_osimage
